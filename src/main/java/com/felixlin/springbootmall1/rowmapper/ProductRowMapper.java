@@ -1,5 +1,6 @@
 package com.felixlin.springbootmall1.rowmapper;
 
+import com.felixlin.springbootmall1.constant.ProductCategory;
 import com.felixlin.springbootmall1.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -13,7 +14,15 @@ public class ProductRowMapper implements RowMapper<Product> {
 
         product.setProductId(resultSet.getInt("product_id"));
         product.setProductName(resultSet.getString("product_name"));
-        product.setCategory(resultSet.getString("category"));
+
+        //改寫成這樣，String轉Enum方法在工作中常見
+        String categoryStr = resultSet.getString("category");
+        ProductCategory category = ProductCategory.valueOf(categoryStr);
+        product.setCategory(category);
+
+        //厲害一點就改寫成一行
+       // product.setCategory(ProductCategory.valueOf(resultSet.getString("category")));
+
         product.setImageUrl(resultSet.getString("image_url"));
         product.setPrice(resultSet.getInt("price"));
         product.setStock(resultSet.getInt("stock"));
