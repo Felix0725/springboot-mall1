@@ -1,5 +1,6 @@
 package com.felixlin.springbootmall1.controller;
 
+import com.felixlin.springbootmall1.constant.ProductCategory;
 import com.felixlin.springbootmall1.dto.ProductRequest;
 import com.felixlin.springbootmall1.model.Product;
 import com.felixlin.springbootmall1.service.ProductService;
@@ -18,12 +19,14 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
-        List<Product> productList = productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+    ) {
+        List<Product> productList = productService.getProducts(category, search);
 
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
-
 
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
