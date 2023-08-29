@@ -5,6 +5,7 @@ import com.felixlin.springbootmall1.dto.ProductQueryParams;
 import com.felixlin.springbootmall1.dto.ProductRequest;
 import com.felixlin.springbootmall1.model.Product;
 import com.felixlin.springbootmall1.service.ProductService;
+import com.felixlin.springbootmall1.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             // 查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
@@ -40,16 +41,25 @@ public class ProductController {
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);
-
         productQueryParams.setOrderBy(orderBy);
         productQueryParams.setSort(sort);
-
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
 
+        // 取得 product list
         List<Product> productList = productService.getProducts(productQueryParams);
 
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        //取得 product 總數
+        Integer total = productService.countProduct(productQueryParams);
+
+        // 分頁（設定response body 的值）
+        Page<Product> page = new Page<>(); // new一個Page類型的Product出來
+        page.setLimit(limit); // 把前端傳過來的limit值，原封不動的set到page這個變數裡，之後就可以直接返回給前端
+        page.setOffset(offset); // 一樣把前端給的offset值，set到page裡，之後就可以直接返回給前端
+        page.setTotal(total); // 商品總數的資訊，還沒實作先寫null
+        page.setResults(productList); // 把上面查詢到商品數據的值，放到results的變數裡
+
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
     @GetMapping("/products/{productId}")
