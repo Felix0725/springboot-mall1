@@ -1,10 +1,15 @@
 package com.felixlin.springbootmall1.dao;
 
+import com.felixlin.springbootmall1.model.Order;
 import com.felixlin.springbootmall1.model.OrderItem;
 
 import java.util.List;
 
 public interface OrderDao {
+
+    Order getOrderById(Integer orderId);
+
+    List<OrderItem> getOrderItemByOrderId(Integer orderId);
 
     Integer createOrder(Integer userId, Integer totalAmount);
 
