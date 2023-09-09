@@ -47,10 +47,6 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
-
-
-
-
     @PostMapping("users/{userId}/orders")
     public ResponseEntity<Order> createOrder(@PathVariable Integer userId,
                                          @RequestBody @Valid CreateOrderRequest createOrderRequest) {
