@@ -50,7 +50,8 @@
 
 ### 使用技術：
 
-- Spring Boot版本：2.3.7.RELEASE（RESTful設計原則)、Controller-Service-Dao三層式架構
+- Spring Boot版本：2.3.7.RELEASE（RESTful設計原則)
+- SpringMVC(Controller-Service-Dao三層式架構)
 - Spring JDBC
 - MySQL版本：8.0.22
   - 單元測試使用 H2 database
